@@ -161,10 +161,27 @@ const DashboardContent = ({ setActiveMenu }) => (
         </div>
       ))}
     </div>
+    <div className="grid grid-cols-2 gap-6">
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h3 className="font-bold text-slate-800 mb-4 flex justify-between cursor-pointer" onClick={() => setActiveMenu('Cash Flow')}>Cash Flow Ringkasan <ChevronRight size={18}/></h3>
+        <div className="text-sm space-y-3">
+          <div className="flex justify-between border-b pb-2"><span>Inflow (Bulan ini)</span> <span className="font-bold text-green-600">Rp500.000.000</span></div>
+          <div className="flex justify-between"><span>Outflow (Bulan ini)</span> <span className="font-bold text-red-600">Rp350.000.000</span></div>
+        </div>
+      </div>
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h3 className="font-bold text-slate-800 mb-4 flex justify-between cursor-pointer" onClick={() => setActiveMenu('Profitability')}>Profitability (Top 3) <ChevronRight size={18}/></h3>
+        <div className="text-sm space-y-3">
+          <p>1. Software SaaS - Margin 66%</p>
+          <p>2. Cloud Hosting - Margin 66%</p>
+          <p>3. Web Development - Margin 66%</p>
+        </div>
+      </div>
+    </div>
   </div>
 );
 
-const TransactionsContent = () => <Table headers={['Tanggal', 'Deskripsi', 'Jumlah']} data={generateDates(1).map((d, i) => ({d, desc: `Transaksi #${100+i}`, amt: `Rp${(1000 + i * 100).toLocaleString('id-ID')}.000`}))} />;
+const TransactionsContent = () => <Table headers={['Tanggal', 'Deskripsi', 'Jumlah']} data={generateDates(1).map((d, i) => ({d, desc: `Transaksi Bisnis #${100+i}`, amt: `Rp${(1000 + i * 100).toLocaleString('id-ID')}.000`}))} />;
 const BudgetContent = () => <Table headers={['Kategori', 'Anggaran', 'Realisasi']} data={['Marketing', 'Tech Dev', 'Operasional'].map((cat, i) => ({cat, bud: `Rp50.000.000`, act: `Rp${(40+i).toLocaleString('id-ID')}.000.000`}))} />;
 const CashFlowContent = () => <Table headers={['Tanggal', 'Jenis', 'Nominal']} data={generateDates(1).map((d, i) => ({d, t: i % 2 === 0 ? 'Inflow' : 'Outflow', n: `Rp${(5000 + i * 500).toLocaleString('id-ID')}.000`}))} />;
 const ProfitabilityContent = () => <Table headers={['Produk', 'Margin']} data={['Software SaaS', 'Jasa Konsultasi'].map((p) => ({p, m: '66%'}))} />;

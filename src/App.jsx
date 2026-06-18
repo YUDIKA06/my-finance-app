@@ -132,8 +132,6 @@ const SettingsContent = () => (
   </div>
 );
 
-// ... (tambahkan komponen lainnya seperti Table, DashboardContent, dll. dari kode sebelumnya)
-
 const Table = ({ headers, data }) => (
   <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
     <table className="w-full text-sm text-left">
@@ -166,7 +164,6 @@ const DashboardContent = ({ setActiveMenu }) => (
   </div>
 );
 
-// (Tambahkan komponen content lainnya sesuai kode Anda sebelumnya)
 const TransactionsContent = () => <Table headers={['Tanggal', 'Deskripsi', 'Jumlah']} data={generateDates(1).map((d, i) => ({d, desc: `Transaksi #${100+i}`, amt: `Rp${(1000 + i * 100).toLocaleString('id-ID')}.000`}))} />;
 const BudgetContent = () => <Table headers={['Kategori', 'Anggaran', 'Realisasi']} data={['Marketing', 'Tech Dev', 'Operasional'].map((cat, i) => ({cat, bud: `Rp50.000.000`, act: `Rp${(40+i).toLocaleString('id-ID')}.000.000`}))} />;
 const CashFlowContent = () => <Table headers={['Tanggal', 'Jenis', 'Nominal']} data={generateDates(1).map((d, i) => ({d, t: i % 2 === 0 ? 'Inflow' : 'Outflow', n: `Rp${(5000 + i * 500).toLocaleString('id-ID')}.000`}))} />;

@@ -47,7 +47,7 @@ export default function App() {
       case 'Goal Tracking': return <GoalsContent />;
       case 'Notification Center': return <NotificationsContent />;
       case 'Security Settings': return <SecurityContent />;
-      default: return <Placeholder title={activeMenu} />;
+      case 'Settings': return <SettingsContent />;
     }
   };
 

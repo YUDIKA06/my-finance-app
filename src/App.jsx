@@ -210,9 +210,59 @@ const NotificationsContent = () => <div className="space-y-2">{Array.from({lengt
 
 const SecurityContent = () => <div className="bg-white p-6 rounded-2xl border border-gray-100 text-sm space-y-2">{Array.from({length: 15}, (_, i) => <p key={i}>Aktivitas Keamanan #{i+1}: Login terdeteksi dari IP 192.168.1.{i} pada {generateDates(1)[i]}</p>)}</div>;
 
-const Placeholder = ({ title }) => (
-  <div className="bg-white p-12 rounded-2xl shadow-sm border border-gray-100 h-96 flex flex-col items-center justify-center text-center text-gray-400">
-    <FileText size={48} className="mb-4 opacity-20" />
-    <h3 className="text-lg font-bold text-slate-800 mb-2">Halaman: {title}</h3>
+const SettingsContent = () => (
+  <div className="max-w-4xl space-y-8">
+    {/* Profil Akun */}
+    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+      <h3 className="font-bold text-lg text-slate-800 mb-4">Profil Akun</h3>
+      <div className="flex items-center gap-6">
+        <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-2xl">YU</div>
+        <div className="space-y-2 flex-1">
+          <input className="w-full p-2 border rounded-lg" defaultValue="Yudesign Creator" />
+          <input className="w-full p-2 border rounded-lg" defaultValue="yudesign@email.com" />
+        </div>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">Simpan</button>
+      </div>
+    </div>
+
+    {/* Keamanan & Preferensi */}
+    <div className="grid grid-cols-2 gap-6">
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h3 className="font-bold text-slate-800 mb-4">Keamanan</h3>
+        <div className="space-y-4">
+          <label className="flex items-center justify-between">
+            <span className="text-sm">Autentikasi 2 Faktor</span>
+            <input type="checkbox" className="toggle" defaultChecked />
+          </label>
+          <button className="text-sm text-blue-600 font-medium">Ubah Kata Sandi</button>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <h3 className="font-bold text-slate-800 mb-4">Notifikasi</h3>
+        <div className="space-y-4">
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" defaultChecked /> Email Marketing</label>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" defaultChecked /> Update Sistem</label>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" /> Laporan Bulanan</label>
+        </div>
+      </div>
+    </div>
+
+    {/* Bantuan & Lainnya */}
+    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+      <h3 className="font-bold text-slate-800 mb-4">Bantuan & Dukungan</h3>
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { t: 'Pusat Bantuan', d: 'Lihat FAQ' },
+          { t: 'Hubungi Kami', d: 'Chat Support' },
+          { t: 'Ketentuan Layanan', d: 'Baca kebijakan' }
+        ].map((item, i) => (
+          <div key={i} className="p-4 border rounded-xl hover:bg-slate-50 cursor-pointer">
+            <p className="font-bold text-sm">{item.t}</p>
+            <p className="text-xs text-gray-500">{item.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 );

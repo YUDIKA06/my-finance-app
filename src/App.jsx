@@ -157,7 +157,6 @@ const DashboardContent = ({ setActiveMenu }) => (
 
 const SettingsContent = () => (
   <div className="max-w-4xl space-y-8">
-    {/* Profil Akun */}
     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
       <h3 className="font-bold text-lg text-slate-800 mb-4">Profil Akun</h3>
       <div className="flex items-center gap-6">
@@ -169,20 +168,14 @@ const SettingsContent = () => (
         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">Simpan</button>
       </div>
     </div>
-
-    {/* Keamanan & Preferensi */}
     <div className="grid grid-cols-2 gap-6">
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <h3 className="font-bold text-slate-800 mb-4">Keamanan</h3>
         <div className="space-y-4">
-          <label className="flex items-center justify-between">
-            <span className="text-sm">Autentikasi 2 Faktor</span>
-            <input type="checkbox" className="toggle" defaultChecked />
-          </label>
+          <label className="flex items-center justify-between"><span className="text-sm">Autentikasi 2 Faktor</span><input type="checkbox" className="toggle" defaultChecked /></label>
           <button className="text-sm text-blue-600 font-medium">Ubah Kata Sandi</button>
         </div>
       </div>
-
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <h3 className="font-bold text-slate-800 mb-4">Notifikasi</h3>
         <div className="space-y-4">
@@ -192,19 +185,12 @@ const SettingsContent = () => (
         </div>
       </div>
     </div>
-
-    {/* Bantuan & Lainnya */}
     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
       <h3 className="font-bold text-slate-800 mb-4">Bantuan & Dukungan</h3>
       <div className="grid grid-cols-3 gap-4">
-        {[
-          { t: 'Pusat Bantuan', d: 'Lihat FAQ' },
-          { t: 'Hubungi Kami', d: 'Chat Support' },
-          { t: 'Ketentuan Layanan', d: 'Baca kebijakan' }
-        ].map((item, i) => (
+        {[{ t: 'Pusat Bantuan', d: 'Lihat FAQ' }, { t: 'Hubungi Kami', d: 'Chat Support' }, { t: 'Ketentuan Layanan', d: 'Baca kebijakan' }].map((item, i) => (
           <div key={i} className="p-4 border rounded-xl hover:bg-slate-50 cursor-pointer">
-            <p className="font-bold text-sm">{item.t}</p>
-            <p className="text-xs text-gray-500">{item.d}</p>
+            <p className="font-bold text-sm">{item.t}</p><p className="text-xs text-gray-500">{item.d}</p>
           </div>
         ))}
       </div>

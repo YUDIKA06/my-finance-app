@@ -1258,25 +1258,70 @@ export default function App() {
               {activeTab === 'menu-11' && (
                 <div className="space-y-6 animate-fadeIn">
                   
-                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Sertifikasi & Kualifikasi Tim Estetika</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="p-4 bg-slate-950/40 border border-slate-850 rounded-xl flex justify-between items-center">
-                        <div>
-                          <p className="font-bold text-xs text-white">Sophia Clarissa (Terapis Senior)</p>
-                          <span className="text-[10px] text-slate-500">Kualifikasi: Laser Rejuvenation (Rating ★ 4.9)</span>
-                        </div>
-                        <span className="text-[9px] bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded-full font-bold">Tersedia</span>
+                  {}
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl space-y-6">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                      <div>
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Sertifikasi & Kualifikasi Tim Estetika (12 Anggota Aktif)</h4>
+                        <p className="text-xs text-slate-500 mt-1">Status kehadiran, penugasan sesi klinik harian, dan lisensi dermatologi terapis.</p>
                       </div>
-                      <div className="p-4 bg-slate-950/40 border border-slate-850 rounded-xl flex justify-between items-center">
-                        <div>
-                          <p className="font-bold text-xs text-white">David Andrean (Specialist Facial)</p>
-                          <span className="text-[10px] text-slate-500">Kualifikasi: Chemical Peeling (Rating ★ 4.8)</span>
+                      <button 
+                        onClick={() => showToast('Simulasi pendaftaran terapis baru diaktifkan.', 'info')}
+                        className="px-4 py-2 bg-purple-650 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-purple-950/25 flex items-center gap-1.5 shrink-0"
+                      >
+                        <Plus className="w-4 h-4" /> Tambah Anggota
+                      </button>
+                    </div>
+
+                    {/* Grid Anggota Tim Terapis (12 Orang) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                      {[
+                        { id: 1, name: "Sophia Clarissa, M.Biomed", role: "Terapis Senior", spec: "Laser Rejuvenation", rating: "4.9", status: "Tersedia", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+                        { id: 2, name: "David Andrean, Amd.Kep", role: "Spesialis Facial", spec: "Chemical Peeling", rating: "4.8", status: "Sesi Kerja", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
+                        { id: 3, name: "Amanda Putri, Amd.Keb", role: "Terapis Skin-Barrier", spec: "Microdermabrasion", rating: "4.7", status: "Tersedia", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+                        { id: 4, name: "Budi Santoso", role: "Aesthetic Specialist", spec: "Blue Light Therapy", rating: "4.6", status: "Istirahat", color: "text-rose-400 bg-rose-500/10 border-rose-500/20" },
+                        { id: 5, name: "Citra Lestari, S.Kep", role: "Terapis Anti-Aging", spec: "RF Microneedling", rating: "4.9", status: "Sesi Kerja", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
+                        { id: 6, name: "Farhan Hakim", role: "Konsultan Kulit", spec: "Skin Analysis", rating: "4.8", status: "Tersedia", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+                        { id: 7, name: "Grace Natalia", role: "Terapis Hidrasi", spec: "HydraFacial Specialist", rating: "4.7", status: "Sesi Kerja", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
+                        { id: 8, name: "Hendra Wijaya, Amd.Kep", role: "Laser Technician", spec: "IPL Hair Removal", rating: "4.8", status: "Tersedia", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+                        { id: 9, name: "Indah Permata", role: "Aesthetician Senior", spec: "Facial Massage & Gua Sha", rating: "4.9", status: "Tersedia", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+                        { id: 10, name: "Kevin Pratama", role: "Spesialis Peeling", spec: "Deep Chemical Peel", rating: "4.5", status: "Sesi Kerja", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" },
+                        { id: 11, name: "Larasati Ningrum", role: "Terapis Herbal", spec: "Organic Facial", rating: "4.6", status: "Tersedia", color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
+                        { id: 12, name: "Muhammad Rizky", role: "Spesialis Laser CO2", spec: "Scar Reduction", rating: "4.8", status: "Sesi Kerja", color: "text-amber-400 bg-amber-500/10 border-amber-500/20" }
+                      ].map((member) => (
+                        <div 
+                          key={member.id} 
+                          className="p-4 bg-slate-950/40 border border-slate-850 hover:border-purple-500/30 rounded-2xl flex flex-col justify-between gap-4 transition-all hover:-translate-y-0.5 group"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5">
+                                <p className="font-bold text-xs text-white group-hover:text-purple-400 transition-colors">{member.name}</p>
+                              </div>
+                              <p className="text-[10px] text-slate-400 font-medium">{member.role} • <span className="text-purple-300 font-semibold">{member.spec}</span></p>
+                              <div className="flex items-center gap-1 text-[10px] text-amber-400 font-bold pt-1">
+                                <span>★ {member.rating}</span>
+                                <span className="text-slate-600 font-normal">| {member.id * 3 + 12} Sesi Selesai</span>
+                              </div>
+                            </div>
+                            <span className={`text-[9px] font-bold px-2.5 py-1 rounded-full border shrink-0 ${member.color}`}>
+                              {member.status}
+                            </span>
+                          </div>
+                          <div className="pt-3 border-t border-slate-900/60 flex justify-between items-center text-[10px]">
+                            <span className="text-slate-500 font-mono">ID: GS-T0{member.id + 10}</span>
+                            <button 
+                              onClick={() => showToast(`Membuka histori penugasan ${member.name}`, 'info')}
+                              className="text-purple-400 hover:text-white hover:underline font-semibold"
+                            >
+                              Detail Tugas
+                            </button>
+                          </div>
                         </div>
-                        <span className="text-[9px] bg-amber-500/10 text-amber-400 px-2.5 py-0.5 rounded-full font-bold">Sesi Kerja</span>
-                      </div>
+                      ))}
                     </div>
                   </div>
+
                 </div>
               )}
 

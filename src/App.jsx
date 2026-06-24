@@ -60,7 +60,7 @@ export default function App() {
   const [aiConfidence, setAiConfidence] = useState(91);
 
   // Profile Edit Simulator State
-  const [profileName, setProfileName] = useState('Sophia Lorenza, M.Biomed');
+  const [profileName, setProfileName] = useState('Kamila Elizabeth');
   const [profileRole, setProfileRole] = useState('Direktur Utama & Ahli Kecantikan');
   const [profilePhone, setProfilePhone] = useState('+62 812-3456-7890');
   const [profileLocation, setProfileLocation] = useState('Headquarters Jakarta, ID');

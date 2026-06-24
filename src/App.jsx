@@ -39,8 +39,8 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Default langsung aktif di dashboard
-  const [activeTab, setActiveTab] = useState('menu-1'); // Default aktif di Modul #1
+  const [isLoggedIn, setIsLoggedIn] = useState(true); 
+  const [activeTab, setActiveTab] = useState('menu-1'); 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
@@ -58,7 +58,6 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Toast notification helper
   const showToast = (message, type = 'success') => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, message, type }]);
@@ -67,7 +66,6 @@ export default function App() {
     }, 3500);
   };
 
-  // Struktur 15 Menu Informasi (diselaraskan dengan gaya FinanceTrack)
   const infoMenus = [
     {
       id: 1,
@@ -330,14 +328,22 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased relative selection:bg-purple-600 selection:text-white">
       
-      {/* CSS internal khusus untuk menghilangkan scrollbar fisik secara total */}
+      {}
       <style>{`
+        /* Universal scrollbar removal across all tags, classes, and elements */
+        * {
+          -ms-overflow-style: none !important;  /* IE and Edge */
+          scrollbar-width: none !important;     /* Firefox */
+        }
+        *::-webkit-scrollbar {
+          display: none !important;             /* Chrome, Safari, Opera */
+        }
         .no-scrollbar::-webkit-scrollbar {
-          display: none;
+          display: none !important;
         }
         .no-scrollbar {
-          -ms-overflow-style: none; /* IE & Edge */
-          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
         }
       `}</style>
 
@@ -381,7 +387,7 @@ export default function App() {
               </button>
             </div>
 
-            {/* Menu Navigasi - no-scrollbar menyembunyikan scrollbar sepenuhnya */}
+            {}
             <div className="flex-1 overflow-y-auto no-scrollbar space-y-6">
               
               {/* Bagian Komando (15 Menu Penuh) */}
@@ -471,14 +477,14 @@ export default function App() {
             </div>
           </header>
 
-          {/* Area Konten Panel Aktif */}
+          {}
           <div className="p-6 flex-1 flex flex-col gap-6">
             {currentActiveMenu && (
               <div className="space-y-6 animate-fadeIn">
                 
                 {/* Banner Selamat Datang / Informasi Modul */}
                 <div className="bg-gradient-to-r from-slate-900/80 via-slate-900 to-slate-950 border border-slate-800/80 p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-purple-500/5 blur-3xl pointer-events-none rounded-full"></div>
+                  <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-purple-50/5 blur-3xl pointer-events-none rounded-full"></div>
                   
                   <div className="flex items-start gap-4">
                     <div className="p-3.5 rounded-2xl bg-purple-600 text-white shadow-lg shadow-purple-900/40">

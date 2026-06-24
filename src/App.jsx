@@ -32,10 +32,14 @@ import {
   RotateCcw,
   Award,
   Cpu,
-  Activity,
   Layers,
   Leaf,
-  GraduationCap
+  GraduationCap,
+  Briefcase,
+  HelpCircle,
+  Clock,
+  Wrench,
+  Bookmark
 } from 'lucide-react';
 
 export default function App() {
@@ -43,21 +47,17 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('menu-1'); 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showNotifications, setShowNotifications] = useState(false);
   const [toasts, setToasts] = useState([]);
   
-  // State interaktif simulasi khusus modul komando
-  const [cloudLoad, setCloudLoad] = useState(42);
-  const [liveViewers, setLiveViewers] = useState(14200);
+  // State interaktif simulasi penjualan & laporan kustom
+  const [salesTimeframe, setSalesTimeframe] = useState('Bulanan');
+  const [reportStartDate, setReportStartDate] = useState('2026-01-01');
+  const [reportEndDate, setReportEndDate] = useState('2026-06-30');
+  
+  // AI Confidence rating state
+  const [aiConfidence, setAiConfidence] = useState(91);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCloudLoad(prev => Math.min(Math.max(prev + (Math.random() * 6 - 3), 20), 85));
-      setLiveViewers(prev => Math.min(Math.max(prev + Math.floor(Math.random() * 200 - 100), 12000), 18000));
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
+  // Toast notification helper
   const showToast = (message, type = 'success') => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, message, type }]);
@@ -67,260 +67,21 @@ export default function App() {
   };
 
   const infoMenus = [
-    {
-      id: 1,
-      key: 'menu-1',
-      title: "Ringkasan Finansial",
-      subtitle: "Dashboard arus kas & margin bersih",
-      value: "Rp 3.59 M",
-      change: "+12.4%",
-      isPositive: true,
-      icon: LayoutDashboard,
-      color: "from-purple-500 to-indigo-600",
-      desc: "Menampilkan total margin kotor, pendapatan operasional bersih, serta proyeksi pertumbuhan keuangan kuartal ini berdasarkan kontribusi seluruh cabang GlowSphere.",
-      kpis: [
-        { label: "Margin Kotor", val: "72.4%" },
-        { label: "Biaya Operasional", val: "Rp 940 JT" },
-        { label: "Proyeksi Q3", val: "+14.8%" }
-      ]
-    },
-    {
-      id: 2,
-      key: 'menu-2',
-      title: "Transaksi Penjualan",
-      subtitle: "Arsip riwayat pembelian produk",
-      value: "14.2K Transaksi",
-      change: "Sangat Stabil",
-      isPositive: true,
-      icon: Activity,
-      color: "from-pink-500 to-rose-600",
-      desc: "Laporan pelacakan transaksi masuk harian. Sistem mencatat lonjakan pembelian pada kategori perawatan kulit (skincare) booster.",
-      kpis: [
-        { label: "Rata-rata Transaksi", val: "Rp 245.000" },
-        { label: "Metode QRIS", val: "68.2%" },
-        { label: "Gagal Proses", val: "0.02%" }
-      ]
-    },
-    {
-      id: 3,
-      key: 'menu-3',
-      title: "Perencanaan Anggaran",
-      subtitle: "Alokasi biaya promosi & operasional",
-      value: "Rp 1.20 M",
-      change: "Tercapai 91%",
-      isPositive: true,
-      icon: Calendar,
-      color: "from-emerald-400 to-teal-600",
-      desc: "Sistem penganggaran terpusat untuk memantau pengeluaran tak terduga serta optimasi dana iklan di berbagai kanal digital.",
-      kpis: [
-        { label: "Anggaran Iklan", val: "Rp 450 JT" },
-        { label: "Dana Darurat", val: "Rp 150 JT" },
-        { label: "Efisiensi Biaya", val: "+12.4%" }
-      ]
-    },
-    {
-      id: 4,
-      key: 'menu-4',
-      title: "Arus Kas Operasional",
-      subtitle: "Visualisasi likuiditas harian",
-      value: "Surplus Rp 890 JT",
-      change: "+8.3% vs pekan lalu",
-      isPositive: true,
-      icon: TrendingUp,
-      color: "from-cyan-500 to-blue-600",
-      desc: "Arus dana masuk dan keluar riil (real cash). Menjamin kelancaran pembayaran vendor kemasan serta bahan baku organik utama.",
-      kpis: [
-        { label: "Arus Masuk", val: "Rp 1.45 M" },
-        { label: "Arus Keluar", val: "Rp 560 JT" },
-        { label: "Rasio Likuiditas", val: "2.4x" }
-      ]
-    },
-    {
-      id: 5,
-      key: 'menu-5',
-      title: "Analisis Profitabilitas",
-      subtitle: "Margin kontribusi per kategori",
-      value: "74.1% Margin",
-      change: "+2.1% re-order",
-      isPositive: true,
-      icon: DollarSign,
-      color: "from-amber-400 to-orange-600",
-      desc: "Menghitung keuntungan murni per produk kecantikan setelah dipotong biaya formulasi, pengemasan, dan komisi agen.",
-      kpis: [
-        { label: "Profit Skincare", val: "78.2%" },
-        { label: "Profit Makeup", val: "64.5%" },
-        { label: "Kategori Terbaik", val: "Serum Booster" }
-      ]
-    },
-    {
-      id: 6,
-      key: 'menu-6',
-      title: "Laporan Keuangan",
-      subtitle: "Ekspor berkas neraca rugi laba",
-      value: "Tersedia (Q2)",
-      change: "Sudah Audit",
-      isPositive: true,
-      icon: FileText,
-      color: "from-indigo-500 to-violet-700",
-      desc: "Dokumen komprehensif yang siap diunduh untuk kebutuhan rapat pemegang saham dan pelaporan wajib pajak berkala.",
-      kpis: [
-        { label: "Format Berkas", val: "PDF / XLSX" },
-        { label: "Laporan Q1", val: "Terunduh 24x" },
-        { label: "Status Audit", val: "WTP" }
-      ]
-    },
-    {
-      id: 7,
-      key: 'menu-7',
-      title: "Analitik Penjualan",
-      subtitle: "Performa sebaran demografi pembeli",
-      value: "DKI Jakarta (42%)",
-      change: "Sangat Efisien",
-      isPositive: true,
-      icon: Share2,
-      color: "from-fuchsia-500 to-purple-800",
-      desc: "Analisis spasial lokasi pembeli tertinggi. Jabodetabek memimpin disusul oleh kota besar di Pulau Jawa dan Sumatera.",
-      kpis: [
-        { label: "Pangsa Jakarta", val: "42.0%" },
-        { label: "Pangsa Surabaya", val: "18.4%" },
-        { label: "Kanal Utama", val: "TikTok Shop" }
-      ]
-    },
-    {
-      id: 8,
-      key: 'menu-8',
-      title: "Wawasan AI Kecantikan",
-      subtitle: "Rekomendasi tren produk otomatis",
-      value: "91% Akurat",
-      change: "+5.4% konversi",
-      isPositive: true,
-      icon: Cpu,
-      color: "from-sky-400 to-indigo-600",
-      desc: "Prediksi kecerdasan buatan terhadap produk yang berpotensi menjadi tren berdasarkan tren pencarian kosmetik global saat ini.",
-      kpis: [
-        { label: "Akurasi Saran", val: "91.0%" },
-        { label: "Rekomendasi Paket", val: "Moist + Serum" },
-        { label: "Konversi Tambahan", val: "Rp 45 JT" }
-      ]
-    },
-    {
-      id: 9,
-      key: 'menu-9',
-      title: "Basis Pengetahuan",
-      subtitle: "Formulasi & edukasi kandungan",
-      value: "142 Artikel",
-      change: "Diperbarui",
-      isPositive: true,
-      icon: Layers,
-      desc: "Dokumentasi internal mengenai kandungan bahan aktif produk seperti Niacinamide, Retinol alternatif, serta sertifikasi halal.",
-      kpis: [
-        { label: "Bahan Aktif", val: "24 Jenis" },
-        { label: "Sertifikat Uji", val: "BPOM Selesai" },
-        { label: "Kategori Edukasi", val: "8 Topik" }
-      ]
-    },
-    {
-      id: 10,
-      key: 'menu-10',
-      title: "Utang Usaha & Suplier",
-      subtitle: "Kontrak & tempo pembayaran vendor",
-      value: "Rp 120 JT Tempo",
-      change: "Lancar",
-      isPositive: true,
-      icon: Truck,
-      color: "from-rose-500 to-red-700",
-      desc: "Mengelola siklus pembayaran bahan baku dengan para petani lokal dan penyuplai botol kaca daur ulang demi keberlanjutan produk.",
-      kpis: [
-        { label: "Jatuh Tempo", val: "14 Hari" },
-        { label: "Total Vendor", val: "12 Perusahaan" },
-        { label: "Rasio Utang", val: "Sangat Rendah" }
-      ]
-    },
-    {
-      id: 11,
-      key: 'menu-11',
-      title: "Manajemen Tim Terapis",
-      subtitle: "Jadwal & performa staf klinik",
-      value: "95.6% Rating",
-      change: "+1.2% kepuasan",
-      isPositive: true,
-      icon: Users,
-      color: "from-yellow-500 to-amber-700",
-      desc: "Ulasan kepuasan pelayanan langsung dari para pelanggan terhadap terapis GlowSphere di seluruh klinik cabang.",
-      kpis: [
-        { label: "Staf Aktif", val: "182 Orang" },
-        { label: "Sertifikasi Pro", val: "94%" },
-        { label: "Jam Kerja Total", val: "1.400 Jam" }
-      ]
-    },
-    {
-      id: 12,
-      key: 'menu-12',
-      title: "Aset Klinik & Inventaris",
-      subtitle: "Pemeliharaan alat kecantikan",
-      value: "99.2% Siap Pakai",
-      change: "Sistem Optimal",
-      isPositive: true,
-      icon: ShoppingBag,
-      color: "from-violet-500 to-fuchsia-600",
-      desc: "Status kelayakan operasional mesin terapi kulit seperti alat laser, pembersih komedo ultrasonik, dan pendingin produk.",
-      kpis: [
-        { label: "Mesin Laser", val: "24 Unit" },
-        { label: "Jadwal Servis", val: "Setiap Bulan" },
-        { label: "Penyusutan Aset", val: "Normal" }
-      ]
-    },
-    {
-      id: 13,
-      key: 'menu-13',
-      title: "Portofolio Produk Baru",
-      subtitle: "Tahap riset & peluncuran sampel",
-      value: "3 Produk Baru",
-      change: "Riset BPOM",
-      isPositive: true,
-      icon: Sparkles,
-      color: "from-emerald-500 to-green-600",
-      desc: "Laporan perkembangan pendaftaran produk kosmetik baru yang ramah lingkungan dan bebas dari eksploitasi hewan.",
-      kpis: [
-        { label: "Sampel Riset", val: "Batch #4" },
-        { label: "Estimasi Rilis", val: "Oktober 2026" },
-        { label: "Uji Sensitivitas", val: "100% Aman" }
-      ]
-    },
-    {
-      id: 14,
-      key: 'menu-14',
-      title: "Pelacakan Target",
-      subtitle: "Pencapaian KPI tahunan",
-      value: "84% Tercapai",
-      change: "+2% pekan ini",
-      isPositive: true,
-      icon: Award,
-      color: "from-blue-500 to-indigo-700",
-      desc: "Membandingkan performa penjualan riil dengan target tahunan guna menjaga motivasi seluruh divisi tim penjualan.",
-      kpis: [
-        { label: "Target Q2", val: "Rp 1.4 M" },
-        { label: "Realisasi Q2", val: "Rp 1.2 M" },
-        { label: "Sisa Target", val: "Rp 200 JT" }
-      ]
-    },
-    {
-      id: 15,
-      key: 'menu-15',
-      title: "Pusat Notifikasi Sistem",
-      subtitle: "Log peringatan & pesan otomatis",
-      value: "2 Aktif",
-      change: "Normal",
-      isPositive: true,
-      icon: Bell,
-      color: "from-green-400 to-emerald-600",
-      desc: "Menyaring informasi krusial seperti stok menipis ataupun pengunggahan data otomatis dari server utama ke dasbor pusat.",
-      kpis: [
-        { label: "Pesan Masuk", val: "4 Item" },
-        { label: "Peringatan Stok", val: "2 Produk" },
-        { label: "Akurasi Kirim", val: "100%" }
-      ]
-    }
+    { id: 1, key: 'menu-1', title: "Ringkasan Finansial", icon: LayoutDashboard },
+    { id: 2, key: 'menu-2', title: "Transaksi Penjualan", icon: ActivityIcon },
+    { id: 3, key: 'menu-3', title: "Perencanaan Anggaran", icon: Calendar },
+    { id: 4, key: 'menu-4', title: "Arus Kas Operasional", icon: TrendingUp },
+    { id: 5, key: 'menu-5', title: "Analisis Profitabilitas", icon: DollarSign },
+    { id: 6, key: 'menu-6', title: "Laporan Keuangan", icon: FileText },
+    { id: 7, key: 'menu-7', title: "Analitik Penjualan", icon: Share2 },
+    { id: 8, key: 'menu-8', title: "Wawasan AI Kecantikan", icon: Cpu },
+    { id: 9, key: 'menu-9', title: "Basis Pengetahuan", icon: Layers },
+    { id: 10, key: 'menu-10', title: "Utang Usaha & Suplier", icon: Truck },
+    { id: 11, key: 'menu-11', title: "Manajemen Tim Terapis", icon: Users },
+    { id: 12, key: 'menu-12', title: "Aset Klinik & Inventaris", icon: ShoppingBag },
+    { id: 13, key: 'menu-13', title: "Portofolio Produk Baru", icon: Sparkles },
+    { id: 14, key: 'menu-14', title: "Pelacakan Target", icon: Award },
+    { id: 15, key: 'menu-15', title: "Pusat Notifikasi Sistem", icon: Bell }
   ];
 
   const currentActiveMenu = infoMenus.find(m => m.key === activeTab);
@@ -328,9 +89,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased relative selection:bg-purple-600 selection:text-white">
       
-      {}
+      {/* CSS internal global untuk jaminan bebas dari segala bentuk scrollbar di semua browser */}
       <style>{`
-        /* Universal scrollbar removal across all tags, classes, and elements */
         * {
           -ms-overflow-style: none !important;  /* IE and Edge */
           scrollbar-width: none !important;     /* Firefox */
@@ -387,14 +147,14 @@ export default function App() {
               </button>
             </div>
 
-            {}
+            {/* Menu Navigasi - Gulir Bebas Scrollbar */}
             <div className="flex-1 overflow-y-auto no-scrollbar space-y-6">
               
               {/* Bagian Komando (15 Menu Penuh) */}
               <div className="space-y-1">
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-3.5 mb-3 flex items-center justify-between">
                   <span>Modul Komando</span>
-                  <span className="bg-purple-900/30 text-purple-400 text-[8px] px-1.5 py-0.5 rounded-full font-mono">15 Menu</span>
+                  <span className="bg-purple-900/30 text-purple-400 text-[8px] px-1.5 py-0.5 rounded-full font-mono font-bold">15 PANEL</span>
                 </p>
                 <div className="space-y-1">
                   {infoMenus.map((menu) => {
@@ -477,136 +237,491 @@ export default function App() {
             </div>
           </header>
 
-          {}
-          <div className="p-6 flex-1 flex flex-col gap-6">
-            {currentActiveMenu && (
+          {/* AREA KONTEN: Dipecah berdasarkan Modul Sidebar yang aktif (DIBEDAKAN PER HALAMAN) */}
+          <div className="p-6 flex-1 flex flex-col gap-6 no-scrollbar overflow-y-auto">
+            
+            {/* ==================== [PAGE 1]: RINGKASAN FINANSIAL (Main Dashboard Layout) ==================== */}
+            {activeTab === 'menu-1' && (
               <div className="space-y-6 animate-fadeIn">
-                
-                {/* Banner Selamat Datang / Informasi Modul */}
-                <div className="bg-gradient-to-r from-slate-900/80 via-slate-900 to-slate-950 border border-slate-800/80 p-6 rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-purple-50/5 blur-3xl pointer-events-none rounded-full"></div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="p-3.5 rounded-2xl bg-purple-600 text-white shadow-lg shadow-purple-900/40">
-                      {React.createElement(currentActiveMenu.icon, { className: "w-5 h-5" })}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-slate-900/80 border border-slate-800/80 p-5 rounded-2xl">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Sales</span>
+                    <h3 className="text-2xl font-black mt-1">$24.85K</h3>
+                    <p className="text-[10px] text-emerald-400 mt-1 font-semibold flex items-center gap-1">▲ +300K +2.0%</p>
+                  </div>
+                  <div className="bg-slate-900/80 border border-slate-800/80 p-5 rounded-2xl">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Revenue</span>
+                    <h3 className="text-2xl font-black mt-1">$3,599.8K</h3>
+                    <p className="text-[10px] text-emerald-400 mt-1 font-semibold flex items-center gap-1">▲ +500K +3.5%</p>
+                  </div>
+                  <div className="bg-slate-900/80 border border-slate-800/80 p-5 rounded-2xl">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Orders</span>
+                    <h3 className="text-2xl font-black mt-1">338,948</h3>
+                    <p className="text-[10px] text-emerald-400 mt-1 font-semibold flex items-center gap-1">▲ +300K +0.3%</p>
+                  </div>
+                  <div className="bg-slate-900/80 border border-slate-800/80 p-5 rounded-2xl">
+                    <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Social Media Engagement</span>
+                    <h3 className="text-2xl font-black mt-1">41K</h3>
+                    <p className="text-[10px] text-emerald-400 mt-1 font-semibold flex items-center gap-1">▲ +250K +1.2%</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl lg:col-span-2">
+                    <div className="flex justify-between items-center mb-6">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Monthly Sales Graph</h4>
+                      <span className="bg-slate-950 px-2 py-1 border border-slate-800 rounded-lg text-[9px] font-mono text-purple-400">Monthly ▼</span>
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[9px] font-mono text-purple-400 font-bold uppercase tracking-widest">MODUL KOMANDO</span>
-                        <span className="text-[9px] font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full">{currentActiveMenu.change}</span>
-                      </div>
-                      <h3 className="text-xl font-black text-white mt-1">{currentActiveMenu.title}</h3>
-                      <p className="text-xs text-slate-400 mt-1 max-w-xl">{currentActiveMenu.subtitle}</p>
+                    <div className="h-48 relative">
+                      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 500 200" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient id="glowGrad1" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.25"/>
+                            <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0"/>
+                          </linearGradient>
+                        </defs>
+                        <path d="M 10 160 Q 90 40 180 130 T 360 80 T 490 30 L 490 200 L 10 200 Z" fill="url(#glowGrad1)" />
+                        <path d="M 10 160 Q 90 40 180 130 T 360 80 T 490 30" fill="none" stroke="#8B5CF6" strokeWidth="3" />
+                      </svg>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6">Social Media Engagement</h4>
+                    <div className="space-y-4">
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs"><span className="text-slate-400">Instagram</span><span>45%</span></div>
+                        <div className="w-full bg-slate-950 h-2 rounded-full"><div className="bg-pink-500 h-full rounded-full" style={{width: '45%'}} /></div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs"><span className="text-slate-400">TikTok</span><span>35%</span></div>
+                        <div className="w-full bg-slate-950 h-2 rounded-full"><div className="bg-purple-500 h-full rounded-full" style={{width: '35%'}} /></div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs"><span className="text-slate-400">Facebook</span><span>20%</span></div>
+                        <div className="w-full bg-slate-950 h-2 rounded-full"><div className="bg-indigo-500 h-full rounded-full" style={{width: '20%'}} /></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl flex flex-col justify-between">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Traffic Source (%)</h4>
+                    <div className="w-32 h-32 mx-auto relative flex items-center justify-center">
+                      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#1e293b" strokeWidth="12" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#8B5CF6" strokeWidth="12" strokeDasharray="251.2" strokeDashoffset="100" />
+                      </svg>
+                      <span className="absolute text-sm font-black">60% Organic</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl md:col-span-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Top Selling Products</h4>
+                    <div className="space-y-2.5 text-xs">
+                      <div className="flex justify-between p-2.5 bg-slate-950/40 border border-slate-850 rounded-xl">
+                        <span>Serum C-Glow Booster</span>
+                        <span className="font-bold text-purple-400">Rp 186.00 JT</span>
+                      </div>
+                      <div className="flex justify-between p-2.5 bg-slate-950/40 border border-slate-850 rounded-xl">
+                        <span>GlowLip Velvet Matte</span>
+                        <span className="font-bold text-purple-400">Rp 98.00 JT</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 2]: TRANSAKSI PENJUALAN (Sales Analysis Page Layout) ==================== */}
+            {activeTab === 'menu-2' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="flex items-center justify-between bg-slate-900/60 border border-slate-800/80 p-4 rounded-2xl">
+                  <div className="flex bg-slate-950 p-1 rounded-xl border border-slate-850 gap-1">
+                    {['Daily', 'Weekly', 'Monthly', 'Annual'].map(p => (
+                      <button 
+                        key={p} 
+                        onClick={() => { setSalesTimeframe(p); showToast(`Timeframe ${p} dipilih!`); }}
+                        className={`px-3 py-1.5 text-[10px] font-bold rounded-lg ${salesTimeframe === p ? 'bg-purple-600 text-white' : 'text-slate-400'}`}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                  <span className="text-[10px] font-mono text-purple-400 bg-purple-900/20 border border-purple-800/30 px-3 py-1.5 rounded-xl">
+                    Time period ▼
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Daily Sales Card */}
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-3xl">
+                    <span className="text-[10px] text-slate-500 font-bold uppercase">Daily Sales</span>
+                    <h4 className="text-lg font-black mt-1">Rp 15.4 JT</h4>
+                    <div className="h-28 mt-4">
+                      <svg className="w-full h-full" viewBox="0 0 100 50">
+                        <path d="M0,45 Q25,10 50,30 T100,5" fill="none" stroke="#10B981" strokeWidth="2" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Weekly Sales Card */}
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-3xl">
+                    <span className="text-[10px] text-slate-500 font-bold uppercase">Weekly Sales</span>
+                    <h4 className="text-lg font-black mt-1">Rp 112 JT</h4>
+                    <div className="h-28 mt-4">
+                      <svg className="w-full h-full" viewBox="0 0 100 50">
+                        <path d="M0,40 Q25,5 50,35 T100,20" fill="none" stroke="#EC4899" strokeWidth="2" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Monthly Sales Card */}
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-3xl">
+                    <span className="text-[10px] text-slate-500 font-bold uppercase">Monthly Sales</span>
+                    <h4 className="text-lg font-black mt-1">Rp 480 JT</h4>
+                    <div className="h-28 mt-4 flex items-end justify-between gap-1">
+                      {[30, 50, 40, 70, 90, 60, 80].map((h, i) => (
+                        <div key={i} className="bg-purple-600 rounded-t w-full" style={{ height: `${h}%` }} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl lg:col-span-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Top 10 Best selling Products</h4>
+                    <div className="space-y-1.5 text-xs font-mono">
+                      <div className="flex justify-between py-1 border-b border-slate-800/40"><span>1. Product 01</span><span>Rp 186M</span></div>
+                      <div className="flex justify-between py-1 border-b border-slate-800/40"><span>2. Product 02</span><span>Rp 144M</span></div>
+                      <div className="flex justify-between py-1 border-b border-slate-800/40"><span>3. Product 03</span><span>Rp 98M</span></div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl flex flex-col justify-between">
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Average Transaction Value</h4>
+                      <p className="text-2xl font-black text-purple-400 mt-2">$139.54</p>
+                      <p className="text-[10px] text-slate-500 mt-1">Average spent across all beauty platforms.</p>
+                    </div>
+                    <button onClick={() => showToast('Detail diunduh!')} className="w-full mt-4 py-2 bg-purple-600/30 text-purple-300 border border-purple-800/40 text-xs font-semibold rounded-xl hover:bg-purple-600 hover:text-white transition-all">
+                      Unduh Rincian
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 3]: PERENCANAAN ANGGARAN (Budgeting Page Layout) ==================== */}
+            {activeTab === 'menu-3' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6">Alokasi Anggaran Utama</h4>
+                    <div className="space-y-5">
+                      <div>
+                        <div className="flex justify-between text-xs mb-1"><span>Pemasaran TikTok</span><span>Rp 450 JT (45%)</span></div>
+                        <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden"><div className="bg-gradient-to-r from-purple-500 to-pink-500 h-full rounded-full" style={{width: '45%'}} /></div>
+                      </div>
+                      <div>
+                        <div className="flex justify-between text-xs mb-1"><span>Bahan Baku Organik</span><span>Rp 350 JT (35%)</span></div>
+                        <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden"><div className="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-full" style={{width: '35%'}} /></div>
+                      </div>
+                      <div>
+                        <div className="flex justify-between text-xs mb-1"><span>Operasional Klinik</span><span>Rp 200 JT (20%)</span></div>
+                        <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden"><div className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full rounded-full" style={{width: '20%'}} /></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl flex flex-col justify-between">
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Pengeluaran Bulan Ini</h4>
+                      <h3 className="text-3xl font-black mt-2">Rp 890 JT</h3>
+                      <p className="text-[11px] text-emerald-400 mt-1 font-semibold">✓ Di dalam batas aman anggaran (91% terpakai)</p>
+                    </div>
+                    <div className="border-t border-slate-800 pt-4 mt-6">
+                      <div className="flex justify-between text-xs text-slate-400"><span>Cadangan Kas Darurat:</span><span className="font-bold text-white">Rp 150 JT</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 4]: ARUS KAS OPERASIONAL ==================== */}
+            {activeTab === 'menu-4' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6">Arus Kas Masuk vs Keluar</h4>
+                  <div className="h-64 relative">
+                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 500 200" preserveAspectRatio="none">
+                      {/* Cash Inflow - Green Curve */}
+                      <path d="M 10 180 Q 150 40 300 90 T 490 20" fill="none" stroke="#10B981" strokeWidth="3" />
+                      {/* Cash Outflow - Orange Curve */}
+                      <path d="M 10 150 Q 150 110 300 130 T 490 100" fill="none" stroke="#F59E0B" strokeWidth="2" />
+                    </svg>
+                  </div>
+                  <div className="flex justify-center gap-6 text-xs mt-4">
+                    <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-emerald-500 rounded-full" /> Masuk</span>
+                    <span className="flex items-center gap-1.5"><span className="w-3 h-3 bg-amber-500 rounded-full" /> Keluar</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 5]: ANALISIS PROFITABILITAS ==================== */}
+            {activeTab === 'menu-5' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-2xl">
+                    <span className="text-[10px] text-slate-500 font-bold uppercase">Margin Kotor</span>
+                    <h3 className="text-2xl font-black text-purple-400 mt-1">74.1%</h3>
+                  </div>
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-2xl">
+                    <span className="text-[10px] text-slate-500 font-bold uppercase">Margin Skincare</span>
+                    <h3 className="text-2xl font-black text-pink-400 mt-1">78.2%</h3>
+                  </div>
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-2xl">
+                    <span className="text-[10px] text-slate-500 font-bold uppercase">Margin Makeup</span>
+                    <h3 className="text-2xl font-black text-indigo-400 mt-1">64.5%</h3>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 6]: LAPORAN KEUANGAN (Reports Page Layout) ==================== */}
+            {activeTab === 'menu-6' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Filter & Atur Tanggal Laporan</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                    <div>
+                      <label className="block text-[10px] uppercase font-bold text-slate-500 mb-1">Mulai Tanggal</label>
+                      <input 
+                        type="date" 
+                        value={reportStartDate}
+                        onChange={(e) => setReportStartDate(e.target.value)}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs focus:ring-2 focus:ring-purple-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] uppercase font-bold text-slate-500 mb-1">Akhir Tanggal</label>
+                      <input 
+                        type="date" 
+                        value={reportEndDate}
+                        onChange={(e) => setReportEndDate(e.target.value)}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs focus:ring-2 focus:ring-purple-500"
+                      />
+                    </div>
                     <button 
-                      onClick={() => showToast(`Audit log diunduh.`, 'success')}
-                      className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-slate-200 border border-slate-800 rounded-xl transition-all"
+                      onClick={() => showToast('Menyusun laporan kustom...')}
+                      className="py-2.5 px-4 bg-purple-600 text-white font-medium text-xs rounded-xl hover:bg-purple-700 transition-all flex items-center justify-center gap-2"
                     >
-                      Audit Log
+                      <Plus className="w-4 h-4" /> Susun Laporan
                     </button>
                   </div>
                 </div>
 
-                {/* Dashboard Konten Utama Modul Aktif */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  
-                  <div className="lg:col-span-2 space-y-6">
-                    
-                    {/* Visualisasi Grafik SVG */}
-                    <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl relative overflow-hidden">
-                      <div className="flex justify-between items-center mb-6">
-                        <div>
-                          <h4 className="text-xs font-bold text-slate-200">Grafik Komando Real-Time</h4>
-                          <p className="text-xs text-slate-400">Monitoring pergerakan data otomatis</p>
-                        </div>
-                      </div>
-
-                      <div className="h-64 w-full flex items-end justify-between px-2 pt-6 relative border-b border-slate-800">
-                        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
-                          <hr className="border-slate-800" />
-                          <hr className="border-slate-800" />
-                          <hr className="border-slate-800" />
-                        </div>
-
-                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 500 200" preserveAspectRatio="none">
-                          <defs>
-                            <linearGradient id="glowGrad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.2"/>
-                              <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0"/>
-                            </linearGradient>
-                          </defs>
-                          <path d="M 10 180 Q 90 40 180 130 T 360 80 T 490 20 L 490 200 L 10 200 Z" fill="url(#glowGrad)" />
-                          <path d="M 10 180 Q 90 40 180 130 T 360 80 T 490 20" fill="none" stroke="#8B5CF6" strokeWidth="3" strokeLinecap="round" />
-                        </svg>
-
-                        <div className="absolute top-1/2 left-1/4 bg-slate-950 border border-purple-500/20 text-purple-300 text-[10px] px-2.5 py-1 rounded-lg">
-                          Metrik Aktif: {currentActiveMenu.value}
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between text-slate-500 text-[9px] mt-3 font-semibold px-1">
-                        <span>08:00</span>
-                        <span>12:00</span>
-                        <span>16:00</span>
-                        <span>20:00</span>
-                      </div>
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <div className="flex justify-between items-center mb-6">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Berkas Unduhan Laporan</h4>
+                    <div className="flex gap-2">
+                      <button onClick={() => showToast('Mengunduh semua file PDF...')} className="px-3 py-1.5 bg-rose-950/40 border border-rose-800/40 text-rose-300 rounded-lg text-[9px] font-bold">Download PDF</button>
+                      <button onClick={() => showToast('Mengunduh semua file Excel...')} className="px-3 py-1.5 bg-emerald-950/40 border border-emerald-800/40 text-emerald-300 rounded-lg text-[9px] font-bold">Download Excel</button>
                     </div>
-
-                    {/* Baris Grid KPI Modul */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      {currentActiveMenu.kpis.map((kpi, idx) => (
-                        <div key={idx} className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-2xl">
-                          <span className="text-[9px] text-slate-400 font-semibold block uppercase tracking-wider">{kpi.label}</span>
-                          <span className="text-base font-bold text-white mt-1.5 block font-mono">{kpi.val}</span>
-                        </div>
-                      ))}
-                    </div>
-
                   </div>
 
-                  {/* Sisi Kanan: Panel Asisten AI */}
-                  <div className="space-y-6">
-                    
-                    <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl text-center relative overflow-hidden">
-                      <div className="absolute top-0 left-0 w-full h-1 bg-purple-500"></div>
-                      <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Nilai Indeks Utama</span>
-                      <h4 className="text-2xl font-black text-white mt-2 font-mono">{currentActiveMenu.value}</h4>
-                      <span className="text-[9px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 rounded-full inline-block mt-3 border border-emerald-500/20">
-                        {currentActiveMenu.change} SINKRON
-                      </span>
+                  <div className="divide-y divide-slate-800/60 text-xs font-mono">
+                    <div className="py-3 flex justify-between items-center">
+                      <span>Laporan_Keuangan_Mei2026.pdf</span>
+                      <button onClick={() => showToast('File diunduh!')} className="text-purple-400 hover:underline">Unduh (2.4 MB)</button>
                     </div>
-
-                    <div className="bg-gradient-to-tr from-purple-950/20 to-slate-900/40 border border-purple-500/20 p-6 rounded-3xl space-y-4">
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-purple-400 animate-pulse" />
-                        <h4 className="text-xs font-bold text-white">Rekomendasi GlowSphere AI</h4>
-                      </div>
-                      
-                      <p className="text-[11px] text-slate-300 leading-relaxed">
-                        Analisis data historis untuk **{currentActiveMenu.title}** mengindikasikan status optimal. Direkomendasikan melakukan audit rutin berkala setiap awal kuartal.
-                      </p>
-
-                      <button 
-                        onClick={() => showToast("Melakukan sinkronisasi AI...", "success")}
-                        className="w-full py-2 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 hover:text-white border border-purple-500/20 text-xs font-semibold rounded-xl transition-all"
-                      >
-                        Optimasi Otomatis
-                      </button>
+                    <div className="py-3 flex justify-between items-center">
+                      <span>Ekspor_Data_Penjualan_Q1.xlsx</span>
+                      <button onClick={() => showToast('File diunduh!')} className="text-purple-400 hover:underline">Unduh (1.8 MB)</button>
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
             )}
+
+            {/* ==================== [PAGE 7]: ANALITIK PENJUALAN ==================== */}
+            {activeTab === 'menu-7' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl text-center">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Sebaran Demografi Pembeli regional</h4>
+                  <div className="h-64 flex items-center justify-center bg-slate-950/40 rounded-2xl border border-slate-850 relative overflow-hidden">
+                    {/* Simulasi radar sebaran */}
+                    <div className="w-48 h-48 rounded-full border border-purple-500/10 flex items-center justify-center animate-pulse">
+                      <div className="w-32 h-32 rounded-full border border-purple-500/20 flex items-center justify-center">
+                        <div className="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/40" />
+                      </div>
+                    </div>
+                    <div className="absolute top-12 left-1/4 text-[10px] bg-purple-900/40 border border-purple-800/30 px-2 py-1 rounded">Jakarta (42%)</div>
+                    <div className="absolute bottom-16 right-1/4 text-[10px] bg-pink-900/40 border border-pink-800/30 px-2 py-1 rounded">Surabaya (18%)</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 8]: WAWASAN AI KECANTIKAN (Social Media Analysis layout model) ==================== */}
+            {activeTab === 'menu-8' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-3xl text-center">
+                    <span className="text-[10px] uppercase font-bold text-slate-500">Akurasi Prediksi Tren</span>
+                    <h2 className="text-3xl font-black text-emerald-400 mt-2">{aiConfidence}%</h2>
+                    <button onClick={() => setAiConfidence(94)} className="text-[9px] text-purple-400 hover:underline mt-2 inline-block">Minta Rekalkulasi</button>
+                  </div>
+
+                  <div className="bg-slate-900/60 border border-slate-800/80 p-5 rounded-3xl md:col-span-2 flex flex-col justify-between">
+                    <span className="text-[10px] uppercase font-bold text-slate-500">Rekomendasi Paket Kombo</span>
+                    <p className="text-xs text-slate-300 mt-2">Kombo "Moisturizer + Serum Anti-Aging" diprediksi menghasilkan kenaikan konversi belanja hingga 5.4% kuartal ini.</p>
+                    <div className="mt-4 flex gap-2">
+                      <button onClick={() => showToast('Paket kombo diaktifkan di toko online!')} className="px-3 py-1.5 bg-purple-600 text-white text-xs font-semibold rounded-lg hover:bg-purple-700 transition-all">Terapkan Paket</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 9]: BASIS PENGETAHUAN ==================== */}
+            {activeTab === 'menu-9' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 font-mono">Bahan Aktif Terdaftar</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div className="p-3 bg-slate-950/40 border border-slate-850 rounded-xl">
+                      <p className="font-bold">Niacinamide (10%)</p>
+                      <span className="text-[10px] text-slate-500">Pencerah kulit utama, aman uji sensitivitas.</span>
+                    </div>
+                    <div className="p-3 bg-slate-950/40 border border-slate-850 rounded-xl">
+                      <p className="font-bold">Bakuchiol (Retinol Alternatif)</p>
+                      <span className="text-[10px] text-slate-500">Anti-aging natural, ramah kulit sensitif.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 10]: UTANG USAHA & SUPLIER ==================== */}
+            {activeTab === 'menu-10' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Siklus & Jadwal Vendor Bahan Baku</h4>
+                  <div className="divide-y divide-slate-800 text-xs font-mono">
+                    <div className="py-3 flex justify-between items-center">
+                      <span>Mitra Tani Organik (Lokal)</span>
+                      <span className="text-amber-400">Tempo: 14 Hari</span>
+                    </div>
+                    <div className="py-3 flex justify-between items-center">
+                      <span>Pabrik Botol Daur Ulang</span>
+                      <span className="text-emerald-400">Status: Lunas</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 11]: TIM TERAPIS ==================== */}
+            {activeTab === 'menu-11' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Performa & Sertifikasi Tim</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 bg-slate-950/40 border border-slate-850 rounded-xl flex justify-between items-center">
+                      <div>
+                        <p className="font-bold text-xs text-white">Sophia Clarissa (Terapis Utama)</p>
+                        <span className="text-[10px] text-slate-500">Rating: ★ 4.9 (Pro-Laser)</span>
+                      </div>
+                      <span className="text-[9px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">Tersedia</span>
+                    </div>
+                    <div className="p-4 bg-slate-950/40 border border-slate-850 rounded-xl flex justify-between items-center">
+                      <div>
+                        <p className="font-bold text-xs text-white">David Andrean (Facial Specialist)</p>
+                        <span className="text-[10px] text-slate-500">Rating: ★ 4.8</span>
+                      </div>
+                      <span className="text-[9px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded-full">Sesi Berlangsung</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 12]: ASET KLINIK & INVENTARIS ==================== */}
+            {activeTab === 'menu-12' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Status Layanan Alat Klinik</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                    <div className="p-4 bg-slate-950/40 border border-slate-850 rounded-xl">
+                      <p className="text-lg font-black text-white">24 Unit</p>
+                      <span className="text-[10px] text-slate-500">Laser Rejuvenation (99.2% Siap)</span>
+                    </div>
+                    <div className="p-4 bg-slate-950/40 border border-slate-850 rounded-xl">
+                      <p className="text-lg font-black text-white">Setiap Bulan</p>
+                      <span className="text-[10px] text-slate-500">Jadwal Kalibrasi Mesin</span>
+                    </div>
+                    <div className="p-4 bg-slate-950/40 border border-slate-850 rounded-xl">
+                      <p className="text-lg font-black text-white">Normal</p>
+                      <span className="text-[10px] text-slate-500">Penyusutan Aset Tahunan</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 13]: PORTFOLIO PRODUK BARU ==================== */}
+            {activeTab === 'menu-13' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Riset Formula Skincare Baru (Batch #4)</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                    Pendaftaran BPOM untuk 3 variasi serum herbal alami saat ini berada dalam tahap uji klinis lanjutan. Target rilis: **Oktober 2026**.
+                  </p>
+                  <div className="w-full bg-slate-950 h-3 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-full rounded-full" style={{width: '75%'}} />
+                  </div>
+                  <span className="text-[9px] text-slate-500 mt-2 block">Progres Pendaftaran BPOM: 75% selesai</span>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 14]: PELACAKAN TARGET ==================== */}
+            {activeTab === 'menu-14' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl text-center">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">KPI Target Q2 Tercapai</h4>
+                  <h2 className="text-3xl font-black text-emerald-400 mt-1">84%</h2>
+                  <p className="text-xs text-slate-300 mt-2">Dibutuhkan Rp 200 JT tambahan penjualan untuk pemenuhan target Rp 1.4 M tahunan.</p>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== [PAGE 15]: PUSAT NOTIFIKASI SISTEM ==================== */}
+            {activeTab === 'menu-15' && (
+              <div className="space-y-6 animate-fadeIn">
+                <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-3xl">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Riwayat Log Keamanan & Sinkronisasi</h4>
+                  <div className="space-y-3 text-xs">
+                    <div className="p-3 bg-purple-900/10 border border-purple-800/30 text-purple-200 rounded-xl flex items-center justify-between">
+                      <span>✓ Server sinkron otomatis pada 16:30 WIB</span>
+                      <span className="text-[10px] text-slate-500">1 jam lalu</span>
+                    </div>
+                    <div className="p-3 bg-rose-900/10 border border-rose-800/30 text-rose-200 rounded-xl flex items-center justify-between">
+                      <span>⚠ Peringatan: Stok Serum C-Glow Booster tersisa 12 unit</span>
+                      <span className="text-[10px] text-slate-500">1 hari lalu</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
 
           {/* Kaki Halaman (Footer) */}
-          <footer className="px-6 py-4 border-t border-slate-900 text-center text-[10px] text-slate-500">
+          <footer className="px-6 py-4 border-t border-slate-900 text-center text-[10px] text-slate-500 shrink-0">
             © 2026 GlowSphere. Hak Cipta Dilindungi Undang-Undang. Komando Terintegrasi Tanpa Hambatan.
           </footer>
 
@@ -615,5 +730,25 @@ export default function App() {
       </div>
 
     </div>
+  );
+}
+
+// Komponen Ikon Kustom Sederhana untuk Transaksi Penjualan
+function ActivityIcon(props) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      {...props}
+    >
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </svg>
   );
 }
